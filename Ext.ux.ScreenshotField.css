@@ -1,0 +1,15 @@
+
+.x-screenshotpanel .browse-btn{
+  background: url(browse.png) 0px 0px no-repeat;
+  width: 16px;
+  height: 16px;
+}
+
+.x-screenshotfield{
+
+}
+
+x-screenshotfield{
+  background:url(../images/default/grid/invalid_line.gif) repeat-x bottom;
+  border:1px solid #dd7870;
+}
