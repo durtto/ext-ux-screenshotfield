@@ -1,15 +1,25 @@
 
-.x-screenshotpanel .browse-btn{
-  background: url(browse.png) 0px 0px no-repeat;
-  width: 16px;
-  height: 16px;
+.x-screenshotfield-bwrap{
+  position:relative;
 }
 
-.x-screenshotfield{
-
+.x-screenshotfield-wrap .x-screenshotfield{
+  border:none;
 }
 
-x-screenshotfield{
-  background:url(../images/default/grid/invalid_line.gif) repeat-x bottom;
-  border:1px solid #dd7870;
+x-screenshotfield-bwrap .x-screenshotfield-wrap .x-screenshotfield-invalid{
+  border-left-width:1px;
+  border-right-width:1px;
+  border-top-width:1px;
+  border-bottom-width:1px;
+
+  border-left-color:#dd7870;
+  border-right-color:#dd7870;
+  border-top-color:#dd7870;
+  border-bottom-color:#dd7870;
+
+  border-left-style:dashed;
+  border-right-style:dashed;
+  border-top-style:dashed;
+  border-bottom-style:dashed;
 }

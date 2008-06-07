@@ -8,10 +8,8 @@
         </script>
         <script type="text/javascript" src="../../ext_2_1/ext-all-debug.js">
         </script>
-        <!-- Application dependencies -->
-		<script type="text/javascript" src="Ext.ux.form.BrowseButton.js"></script>
-        <script type="text/javascript" src="Ext.ux.ScreenshotUploadPanel.js"></script>
-		<script type="text/javascript" src="Ext.ux.ScreenshotField.js"></script>        
+        <!-- Application dependencies -->		
+        <script type="text/javascript" src="Ext.ux.ScreenshotField.js"></script>     
 		
 		<script type="text/javascript">
             Ext.onReady(function(){
@@ -26,17 +24,17 @@
 						layout: 'fit',
 						height: 280,
 						bodyStyle: 'padding:10px;background-color:#fff;font-family:verdana;font-size:12px;line-height:22px',
-						html: "<h2>Ext.ux.ScreenshotUploadPanel || Ext.ux.ScreenshotField</h2>"
-							+ "<p>Ext.ux.ScreenshotUploadPanel is a stand-alone file upload component that uses the BrowseButton Extension from lopeky and inspired by his screenshot panel example usage.</p>"
-							+ "<p>Ext.ux.ScreenshotField is a component that is composed of Ext.ux.ScreenshotUploadPanel and allows the usage of the upload panel within forms as a form field.</p>"
+						html: "<h2>Ext.ux.ScreenshotField</h2>"
+							+ "<p>Ext.ux.ScreenshotUploadPanel (from version 1.0) no longer exists, it's implemented as a Ext.Panel and cannot be used (by composition) as a Ext.form.Field without issues, primarily because Ext.form.Field which we intend to extend is not a container.</p>"
+							+ "<p>Using Ext.ux.ScreenshotUploadPanel as we did in version 1.0 results in the 'field' been hidden in card layout implementations, the layout manager possibly thinks its on of the cards !</p>"
+							+ "<p>Ext.ux.ScreenshotField (in this release) is a component that now merges the functionality of the deprecated Ext.ux.ScreenshotUploadPanel and the revelenat ones from Ext.BrowseButton (by lopeky) into a single form field for uploading screenshots (picture files) in situations where you need a visual preview of the file you just uploaded; e.g passport upload in bio-data forms.</p>"
 							+ "<h2>Known Issues :</h2>"
 							+ "<ul>"
-							+ "<li>Ext.ux.ScreenshotField has no support yet for validation qtips</li>"
-							+ "<li>Calling getValues() on the form containing Ext.ux.ScreenshotField does not include its value</li>"
-							+ "<li>Ext.ux.ScreenshotField is yet to respect the labelAlign config</li>"
+							+ "<li>Ext.ux.ScreenshotField has no support yet for validation state highlights or qtips : {var messingMeUp = markInvalid && clearInvalid}</li>"
 							+ "</ul> <br />"
 							+ "<b>Author :</b> Charles Opute Odili (chalu)<br />"
-							+ "<b>Version :</b> 1.0 Beta<br />"
+							+ "<b>Version :</b> 1.1 Beta<br />"
+							+ "<b>Release Date :</b> 07/06/2008 Beta<br />"
 							+ "<b>License :</b> GPLv3<br />"
 					}, {
 				        region: 'center',
@@ -46,18 +44,7 @@
 							region: 'west',
 							width: 200,
 							bodyStyle: 'padding:5px 5px 5px 20px',
-							xtype: 'panel',
-							items: {
-								xtype: 'screenshotupload',
-								width: 100,
-								height: 110,								
-								inputFileName: 'passport',
-								uploadUrl: 'php/uploader.php',
-								baseParams: {
-									query: 'passport-upload'
-								},
-								filetypeList: ['gif', 'jpg', 'png']
-							}							
+							xtype: 'panel'						
 						}, {
 							region: 'center',
 							xtype: 'panel',
@@ -81,11 +68,14 @@
 									fieldLabel: 'Passport',									
 									xtype: 'screenshotfield',
 									name: 'passport',
+									width: 96,
+									height: 96,
+									value: 'placeholder.gif',
+									//debug: true,
 									allowBlank: false,	
 									baseParams: {
 										query: 'passport-upload'
-									},								
-									value: 'placeholder.gif'
+									}
 								}],
 								buttons: [{
 									text: 'Reset',
