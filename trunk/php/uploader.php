@@ -2,7 +2,7 @@
 
 $response = array();
 $query = $_POST['query'];
-if(isset($query) && $query === 'passport-upload'){
+if(isset($query) && $query === 'passport-upload'){  // file upload attempt
 	$inputName = 'passport';
 	$target_path = "uploads" . DIRECTORY_SEPARATOR;
 	
@@ -36,7 +36,7 @@ if(isset($query) && $query === 'passport-upload'){
 		$response['success'] = false;
 		$response['errors'] = array('No file was uploaded.');
 	}
-}else{
+}else{  // the form was submitted
 	$response['success'] = true;
 }
 
