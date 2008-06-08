@@ -25,6 +25,7 @@ if(isset($query) && $query === 'passport-upload'){  // file upload attempt
 		if(move_uploaded_file($tmpName, $target_path)) {
 			$response['success'] = true;
 	        $response['validState'] = true;
+                $response['data'] = array(); // needed if you ever use this with Ext.ux.XMetaForm or Ext.ux.Wizard !!
 			$response['screenshotUrl'] = str_replace(DIRECTORY_SEPARATOR, '/', 'php' . DIRECTORY_SEPARATOR . $target_path);
 		} else {
 			$response['success'] = false;

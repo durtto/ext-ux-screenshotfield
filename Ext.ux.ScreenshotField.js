@@ -14,10 +14,10 @@ if(Array.prototype.inArray === undefined){
  * It allows for upload of files to the server
  * 
  * @class Ext.ux.ScreenshotField
- * @extends Ext.Panel
+ * @extends Ext.form.Field
  * 
  * @author Charles Opute Odili (chalu)
- * @version 1.0 Beta
+ * @version 1.1 Beta
  * @license GPLv3
  */
 Ext.ux.ScreenshotField = Ext.extend(Ext.form.Field, {
@@ -49,7 +49,7 @@ Ext.ux.ScreenshotField = Ext.extend(Ext.form.Field, {
      * the url of the field's form is assumed 
      * @type String
      */
-    uploadUrl: null,
+    uploadUrl: null,    
     
     /**
      * The URL to an existing screenshot
@@ -60,7 +60,8 @@ Ext.ux.ScreenshotField = Ext.extend(Ext.form.Field, {
     emptyUrl: Ext.BLANK_IMAGE_URL,
     
     /**
-     * The name the file upload is submited with
+     * The name the file upload is submited with, also serves
+     * as the name of this input field
      * @type String
      */
     name: 'screenshot',                
@@ -72,7 +73,10 @@ Ext.ux.ScreenshotField = Ext.extend(Ext.form.Field, {
 	waitMsg: 'Uploading',
 	
 	/**
-	 * A validation state to initialize it with
+	 * A validation state to initialize it with. The field may 
+	 * already have a screenshot that is valid (from an existing upload maybe),
+	 * this enables us not to treat it as 'blank entry' and thus not require an upload.
+	 * If set to true, the field will pass validation tests, after the allowBlank tests haved passed. 
 	 * @type Boolean
 	 */
 	validState: false,
@@ -140,8 +144,11 @@ Ext.ux.ScreenshotField = Ext.extend(Ext.form.Field, {
         this.boxWrap = this.wrap.boxWrap().addClass("x-box-blue");
         this.boxWrap.addClass('x-screenshotfield-bwrap');
         this.boxWrap.position('relative'); // this is important!
-        this.boxWrap.setWidth(this.width + 25);
-        this.boxWrap.setHeight(this.height + 20); 
+        
+        this.boxWrapWidth = this.width + 25;
+        this.boxWrapHeight = this.width + 20;
+        this.boxWrap.setWidth(this.boxWrapWidth);
+        this.boxWrap.setHeight(this.boxWrapHeight); 
         this.wrap.setWidth(this.width);
         this.wrap.setHeight(this.height);
         
@@ -306,8 +313,8 @@ Ext.ux.ScreenshotField = Ext.extend(Ext.form.Field, {
     
     setClipSize: function(){
 		if (this.clipEl) {
-			var width = this.boxWrap.getWidth();
-			var height = this.boxWrap.getHeight();
+			var width = this.boxWrapWidth;
+			var height = this.boxWrapHeight;
 			if (Ext.isIE) {
 				width = width + 5;
 				height = height + 5;
@@ -319,6 +326,19 @@ Ext.ux.ScreenshotField = Ext.extend(Ext.form.Field, {
 				height = height + 6;
 			}
 			this.clipEl.setSize(width, height);
+			
+			var fieldItem = this.boxWrap.up('div.x-form-item');
+			if(!this.parentForm){
+	    		this.parentForm = this.getParentForm();
+	    	}
+	    	
+	    	var alignCfg = this.parentForm.initialConfig.labelAlign;
+	    	if(alignCfg !== undefined && alignCfg === 'top'){
+	    		// if labelAlign is set to top we have to make up for the extra margin and
+	    		// padding that the field label gets 
+	    		height += 10;
+	    	}
+			fieldItem.setHeight(height); // resize to prevent scrolling 
 		}
 	},
 	
@@ -339,7 +359,7 @@ Ext.ux.ScreenshotField = Ext.extend(Ext.form.Field, {
 			tag: 'input',
 			type: 'file',
 			size: 1, // must be > 0. It's value doesn't really matter due to our masking div (inputFileCt).  
-			name:  this.hiddenName || this.name || Ext.id(this.el),
+			name:  this.uploadName || this.hiddenName || this.name || Ext.id(this.el),
 			tabindex: this.tabIndex,
 			// Use the same pointer as an Ext.Button would use.  This doesn't work in Firefox.
 			// This positioning right-aligns the input file to ensure that the "Browse" button is visible.
