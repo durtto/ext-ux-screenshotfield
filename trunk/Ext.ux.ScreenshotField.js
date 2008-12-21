@@ -1,14 +1,4 @@
 
-if(Array.prototype.inArray === undefined){
-	Array.prototype.inArray = function(v){
-		for(var n = 0, len = this.length; n < len; n++){
-			if(this[n] === v){
-				return true;
-			}
-		}
-		return false;
-	}
-}
 /*
  * This is a component that builds on the work of lopeky (BrowseButton)
  * It allows for upload of files to the server
@@ -439,8 +429,7 @@ Ext.ux.ScreenshotField = Ext.extend(Ext.form.Field, {
     
     getParentForm: function(){
     	var form = this.findParentBy(function(cnt){
-    		var xtypes = cnt.getXTypes().split('/');
-    		if(xtypes.inArray('form')){
+    		if(cnt.isXType('form')){
     			return true;
     		}    		
     	}, this);
