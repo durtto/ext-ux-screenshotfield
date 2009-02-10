@@ -1,20 +1,24 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="../../ext_2_1/resources/css/ext-all.css"/>
-		<link rel="stylesheet" type="text/css" href="Ext.ux.ScreenshotField.css"/>
+        <link rel="stylesheet" type="text/css" href="../../../lib/extjs/ext_2_2_1/resources/css/ext-all.css"/>
+		<link rel="stylesheet" type="text/css" href="src/css/Ext.ux.ScreenshotField.css"/>
         <!-- Ext dependencies -->
-        <script type="text/javascript" src="../../ext_2_1/adapter/ext/ext-base.js">
+        <script type="text/javascript" src="../../../lib/extjs/ext_2_2_1/adapter/ext/ext-base.js">
         </script>
-        <script type="text/javascript" src="../../ext_2_1/ext-all-debug.js">
+        <script type="text/javascript" src="../../../lib/extjs/ext_2_2_1/ext-all-debug.js">
         </script>
-        <!-- Application dependencies -->		
-        <script type="text/javascript" src="Ext.ux.ScreenshotField.js"></script>     
+		<script type="text/javascript">
+			/*
+			 * Make sure this is set correctly before loading Ext.ux.ScreenshotField.js
+			 */
+			Ext.BLANK_IMAGE_URL = '../../../lib/extjs/ext_2_2_1/resources/images/default/s.gif';
+		</script>
+        <script type="text/javascript" src="src/js/Ext.ux.ScreenshotField.js"></script>     
 		
 		<script type="text/javascript">
-            Ext.onReady(function(){
-				Ext.BLANK_IMAGE_URL = '../../ext_2_1/resources/images/default/s.gif'; 
-                Ext.QuickTips.init();
+            Ext.onReady(function(){				
+                Ext.QuickTips.init();				 
 				
 				new Ext.Viewport({
 				    layout: 'border',
@@ -24,17 +28,14 @@
 						layout: 'fit',
 						height: 280,
 						bodyStyle: 'padding:10px;background-color:#fff;font-family:verdana;font-size:12px;line-height:22px',
-						html: "<h2>Ext.ux.ScreenshotField</h2>"
-							+ "<p>Ext.ux.ScreenshotUploadPanel (from version 1.0) no longer exists, it's implemented as a Ext.Panel and cannot be used (by composition) as a Ext.form.Field without issues, primarily because Ext.form.Field which we intend to extend is not a container.</p>"
-							+ "<p>Using Ext.ux.ScreenshotUploadPanel as we did in version 1.0 results in the 'field' been hidden in card layout implementations, the layout manager possibly thinks its on of the cards !</p>"
-							+ "<p>Ext.ux.ScreenshotField (in this release) is a component that now merges the functionality of the deprecated Ext.ux.ScreenshotUploadPanel and the revelenat ones from Ext.BrowseButton (by lopeky) into a single form field for uploading screenshots (picture files) in situations where you need a visual preview of the file you just uploaded; e.g passport upload in bio-data forms.</p>"
-							+ "<h2>Known Issues :</h2>"
-							+ "<ul>"
-							+ "<li>Ext.ux.ScreenshotField has no support yet for validation state highlights or qtips : {var messingMeUp = markInvalid && clearInvalid}</li>"
-							+ "</ul> <br />"
+						html: "<h2>Ext.ux.ScreenshotField 2.0</h2>"
+							+ "<p>Ext.ux.ScreenshotField (in this release) is a component that now merges functionality from Ext.BrowseButton and Ext.ux.ImageField into a single form field for : <br /><br />"
+							+ "<b>1.</b> Uploading screenshots (picture files) in situations where you need a visual preview of the file you just uploaded; e.g passport upload in bio-data forms."
+							+ "<br /><b>2.</b> Browsing for and selecting a screenshot from a remote location</p>"
+							+ "<br />"
 							+ "<b>Author :</b> Charles Opute Odili (chalu)<br />"
-							+ "<b>Version :</b> 1.1 Beta<br />"
-							+ "<b>Release Date :</b> 07/06/2008<br />"
+							+ "<b>Version :</b> 2.0 <br />"
+							+ "<b>Release Date :</b> 10/02/2009<br />"
 							+ "<b>License :</b> GPLv3<br />"
 					}, {
 				        region: 'center',
@@ -53,29 +54,82 @@
 							items: {
 								xtype: 'form',
 								id: 'upload-form',							
-								url: 'php/uploader.php',
+								url: 'src/php/uploader.php',
 								monitorValid: true,
 								labelAlign: 'top',
+								layout: 'column',
 								labelSeparator: '',
 								buttonAlign: 'left',
 								fileUpload: true,
 								items: [{
-									xtype: 'textfield',
-									fieldLabel: 'Name',
-									name: 'username',
-									allowBlank: false
-								}, {
-									fieldLabel: 'Passport',									
-									xtype: 'screenshotfield',
-									name: 'passport',
-									width: 96,
-									height: 96,
-									value: 'placeholder.gif',
-									//debug: true,
-									allowBlank: false,	
-									baseParams: {
-										query: 'passport-upload'
-									}
+									columnWidth: .5,
+									layout: 'form',
+									items: [{
+										xtype: 'textfield',
+										fieldLabel: 'First Name',
+										name: 'fname',
+										allowBlank: false
+									}, {
+										fieldLabel: 'Passport',									
+										xtype: 'screenshotfield',
+										name: 'passport',
+										//readOnly: true,
+										//disabled: true,
+										width: 75,
+										height: 65,
+										value: 'src/imgs/placeholder.gif',
+										mode: 'remote',
+										allowBlank: false,
+										valueField: 'url',
+										alwaysLoadStore: true,
+										browser: {
+											store: {
+									            url: 'src/php/data.php',
+									            root: 'data',
+												baseParams: {
+													directory: 'images'
+												},
+									            fields: ['name', 'url', {name:'size', type: 'float'}, {name:'mtime', type:'date', dateFormat:'timestamp'}]
+									        },
+								            tpl: '<tpl for="."><div class="thumb-wrap" id="{name}"><div class="thumb"><img src="{url}" alt="{shortName}" title="{name}" /></div></div></tpl>',
+								            autoHeight: true,
+											autoWidth: true,
+								            overClass: 'x-view-over',
+								            itemSelector: 'div.thumb-wrap',
+								            emptyText: 'No images to display',
+								            loadingText: 'Loading...',
+											singleSelect: true
+										},
+										browserWidth: 200,
+										browserHeight: 150
+									}]
+								},  {
+									columnWidth: .5,
+									layout: 'form',
+									items: [{
+										xtype: 'textfield',
+										fieldLabel: 'Last Name',
+										name: 'lname',
+										allowBlank: false
+									}, {
+										xtype: 'textfield',
+										fieldLabel: 'Email',
+										name: 'email',
+										vtype: 'email',
+										allowBlank: false
+									}, {
+										fieldLabel: 'Signature',									
+										xtype: 'screenshotfield',
+										name: 'signature',
+										//readOnly: true,
+										//disabled: true,
+										width: 150,
+										height: 45,
+										allowBlank: false,
+										baseParams: {
+											query: 'signature-upload'
+										}
+									}]									
 								}],
 								buttons: [{
 									text: 'Reset',
@@ -87,8 +141,7 @@
 									formBind: true,
 									handler: function(){
 										var form = Ext.getCmp('upload-form').getForm();
-										console.log(form.getValues());
-										form.submit();
+										Ext.Msg.alert('Form Values', form.getValues(true));
 									}
 								}]
 							}								
