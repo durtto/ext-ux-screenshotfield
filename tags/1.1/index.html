@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="../../ext_2_1/resources/css/ext-all.css"/>
+		<link rel="stylesheet" type="text/css" href="Ext.ux.ScreenshotField.css"/>
+        <!-- Ext dependencies -->
+        <script type="text/javascript" src="../../ext_2_1/adapter/ext/ext-base.js">
+        </script>
+        <script type="text/javascript" src="../../ext_2_1/ext-all-debug.js">
+        </script>
+        <!-- Application dependencies -->		
+        <script type="text/javascript" src="Ext.ux.ScreenshotField.js"></script>     
+		
+		<script type="text/javascript">
+            Ext.onReady(function(){
+				Ext.BLANK_IMAGE_URL = '../../ext_2_1/resources/images/default/s.gif'; 
+                Ext.QuickTips.init();
+				
+				new Ext.Viewport({
+				    layout: 'border',
+				    items: [{
+						region: 'north',
+						xtype: 'panel',
+						layout: 'fit',
+						height: 280,
+						bodyStyle: 'padding:10px;background-color:#fff;font-family:verdana;font-size:12px;line-height:22px',
+						html: "<h2>Ext.ux.ScreenshotField</h2>"
+							+ "<p>Ext.ux.ScreenshotUploadPanel (from version 1.0) no longer exists, it's implemented as a Ext.Panel and cannot be used (by composition) as a Ext.form.Field without issues, primarily because Ext.form.Field which we intend to extend is not a container.</p>"
+							+ "<p>Using Ext.ux.ScreenshotUploadPanel as we did in version 1.0 results in the 'field' been hidden in card layout implementations, the layout manager possibly thinks its on of the cards !</p>"
+							+ "<p>Ext.ux.ScreenshotField (in this release) is a component that now merges the functionality of the deprecated Ext.ux.ScreenshotUploadPanel and the revelenat ones from Ext.BrowseButton (by lopeky) into a single form field for uploading screenshots (picture files) in situations where you need a visual preview of the file you just uploaded; e.g passport upload in bio-data forms.</p>"
+							+ "<h2>Known Issues :</h2>"
+							+ "<ul>"
+							+ "<li>Ext.ux.ScreenshotField has no support yet for validation state highlights or qtips : {var messingMeUp = markInvalid && clearInvalid}</li>"
+							+ "</ul> <br />"
+							+ "<b>Author :</b> Charles Opute Odili (chalu)<br />"
+							+ "<b>Version :</b> 1.1 Beta<br />"
+							+ "<b>Release Date :</b> 07/06/2008<br />"
+							+ "<b>License :</b> GPLv3<br />"
+					}, {
+				        region: 'center',
+				        xtype: 'panel',
+						layout: 'border',
+				        items: [{
+							region: 'west',
+							width: 200,
+							bodyStyle: 'padding:5px 5px 5px 20px',
+							xtype: 'panel'						
+						}, {
+							region: 'center',
+							xtype: 'panel',
+							frame: true,
+							bodyStyle: 'padding:5px',
+							items: {
+								xtype: 'form',
+								id: 'upload-form',							
+								url: 'php/uploader.php',
+								monitorValid: true,
+								labelAlign: 'top',
+								labelSeparator: '',
+								buttonAlign: 'left',
+								fileUpload: true,
+								items: [{
+									xtype: 'textfield',
+									fieldLabel: 'Name',
+									name: 'username',
+									allowBlank: false
+								}, {
+									fieldLabel: 'Passport',									
+									xtype: 'screenshotfield',
+									name: 'passport',
+									width: 96,
+									height: 96,
+									value: 'placeholder.gif',
+									//debug: true,
+									allowBlank: false,	
+									baseParams: {
+										query: 'passport-upload'
+									}
+								}],
+								buttons: [{
+									text: 'Reset',
+									handler: function(){
+										Ext.getCmp('upload-form').getForm().reset();
+									}
+								}, {
+									text: 'Submit',
+									formBind: true,
+									handler: function(){
+										var form = Ext.getCmp('upload-form').getForm();
+										console.log(form.getValues());
+										form.submit();
+									}
+								}]
+							}								
+						}]
+				    }]
+				});
+								
+            });
+        </script>
+        <title>Ext.ux.ScreenshotField</title>		
+    </head>
+    <body>    	
+    </body>
+</html>

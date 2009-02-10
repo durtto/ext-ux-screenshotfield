@@ -1,0 +1,25 @@
+
+.x-screenshotfield-bwrap{
+  position:relative;
+}
+
+.x-screenshotfield-wrap .x-screenshotfield{
+  border:none;
+}
+
+x-screenshotfield-bwrap .x-screenshotfield-wrap .x-screenshotfield-invalid{
+  border-left-width:1px;
+  border-right-width:1px;
+  border-top-width:1px;
+  border-bottom-width:1px;
+
+  border-left-color:#dd7870;
+  border-right-color:#dd7870;
+  border-top-color:#dd7870;
+  border-bottom-color:#dd7870;
+
+  border-left-style:dashed;
+  border-right-style:dashed;
+  border-top-style:dashed;
+  border-bottom-style:dashed;
+}
