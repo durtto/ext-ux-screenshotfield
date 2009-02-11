@@ -1,4 +1,4 @@
-Ext.namespace('Ext.ux');
+Ext.namespace('Ext.ux.form');
 
 /**
  * Screenshot component for ExtJs 2.x
@@ -13,14 +13,14 @@ Ext.namespace('Ext.ux');
  * 1. Upload of files (pictures) to the server so that you can immediately preview what you uploaded.
  * 2. Selecting a picture from a remote location (inpired by Ext.ux.ImageField)
  * 
- * @class Ext.ux.ScreenshotField
+ * @class Ext.ux.form.ScreenshotField
  * @extends Ext.form.TriggerField
  * 
  * @constructor
  * @param {Object} config The config object 
  */
 
-Ext.ux.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
+Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 	/**
 	 * @cfg {Array} filetypeList
 	 * A list of file types to allow for upload, applied if mode is local
@@ -143,7 +143,7 @@ Ext.ux.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
     initComponent: function(){ 
 		this.hideTrigger = this.readOnly;
 		this.hasChange = false;
-        Ext.ux.ScreenshotField.superclass.initComponent.apply(this, arguments);
+        Ext.ux.form.ScreenshotField.superclass.initComponent.apply(this, arguments);
         
         this.width = parseInt(this.width, 10);
         this.height = parseInt(this.height, 10);
@@ -190,7 +190,7 @@ Ext.ux.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
     },
     
     onRender: function(ct, position){
-    	Ext.ux.ScreenshotField.superclass.onRender.call(this, ct, position);        
+    	Ext.ux.form.ScreenshotField.superclass.onRender.call(this, ct, position);        
 		
 		this.el.dom.style.border = '0 none';
         this.el.dom.setAttribute('tabIndex', -1);
@@ -273,13 +273,13 @@ Ext.ux.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
     
     getValue: function(){
     	if(!this.rendered) {
-            return Ext.ux.ScreenshotField.superclass.getValue.call(this);
+            return Ext.ux.form.ScreenshotField.superclass.getValue.call(this);
         }
         return this.getScreenshotView();
     },
     
     setValue: function(v){
-        Ext.ux.ScreenshotField.superclass.setValue.call(this, v);
+        Ext.ux.form.ScreenshotField.superclass.setValue.call(this, v);
         if(this.rendered){
         	this.setScreenshotView(v);
         }        
@@ -306,7 +306,7 @@ Ext.ux.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
     },
 	
 	disable: function(){
-		Ext.ux.ScreenshotField.superclass.disable.call(this);		
+		Ext.ux.form.ScreenshotField.superclass.disable.call(this);		
 		if(this.mode === 'local'){
 			console.info('disabled on local');
 			this.removeClipListeners();		
@@ -315,7 +315,7 @@ Ext.ux.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 	},
 	
 	enable: function(){
-		Ext.ux.ScreenshotField.superclass.enable.call(this);				
+		Ext.ux.form.ScreenshotField.superclass.enable.call(this);				
 		if(this.mode === 'local'){
 			this.addClipListeners();
 			this.inputFileEl.dom.disabled = false;
@@ -323,7 +323,7 @@ Ext.ux.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 	},
 	
 	markInvalid : function(msg){
-		Ext.ux.ScreenshotField.superclass.markInvalid.call(msg);
+		Ext.ux.form.ScreenshotField.superclass.markInvalid.call(msg);
 		
         if(!this.rendered || this.preventMark){ // not rendered
             return;
@@ -380,7 +380,7 @@ Ext.ux.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
     },
 	
 	clearInvalid: function(){
-		Ext.ux.ScreenshotField.superclass.clearInvalid.call(this);
+		Ext.ux.form.ScreenshotField.superclass.clearInvalid.call(this);
 		
         if(!this.rendered || this.preventMark){ // not rendered
             return;
@@ -711,4 +711,4 @@ Ext.ux.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
     
 });
 
-Ext.reg('screenshotfield', Ext.ux.ScreenshotField);
+Ext.reg('screenshotfield', Ext.ux.form.ScreenshotField);
