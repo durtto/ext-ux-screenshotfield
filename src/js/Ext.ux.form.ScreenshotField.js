@@ -7,14 +7,14 @@ Ext.namespace('Ext.ux.form');
  * Screenshot form field component for ExtJs 2.x
  * This component builds on the work of lopeky (BrowseButton) to allow for :
  * 1. Upload of files (pictures) to the server so that you can immediately preview what you uploaded.
- * 2. Selecting a picture from a remote location (inpired by Ext.ux.ImageField)
- * 
- * @version 2.0
- * @licence GPLv3
- * @author Charles Opute Odili (chalu) <a href="mailto:chaluwa@gmail.com">chaluwa@gmail.com</a><br><br>
+ * 2. Selecting a picture from a remote location (inpired by Ext.ux.ImageField)<br><br>
  * 
  * Forum Thread : <a href="http://extjs.com/forum/showthread.php?t=37337">http://extjs.com/forum/showthread.php?t=37337</a><br>
  * Project Home : <a href="http://code.google.com/p/ext-ux-screenshotfield">http://code.google.com/p/ext-ux-screenshotfield</a>
+ * 
+ * @version 2.0
+ * @licence <a href="http://www.gnu.org/licenses/gpl.html">GPLv3</a>
+ * @author Charles Opute Odili (chalu) <a href="mailto:chaluwa@gmail.com">chaluwa@gmail.com</a>
  * 
  * @constructor
  * @param {Object} config The config object
