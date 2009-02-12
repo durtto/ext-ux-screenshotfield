@@ -1,25 +1,24 @@
 Ext.namespace('Ext.ux.form');
 
 /**
- * Screenshot component for ExtJs 2.x
- * 
- * @author Charles Opute Odili (chalu)
- * @version 2.0
- * @licence GPLv3
- */
-
-/**
+ * @class Ext.ux.form.ScreenshotField
+ * @extends Ext.form.TriggerField
+ * @desc
+ * Screenshot form field component for ExtJs 2.x
  * This component builds on the work of lopeky (BrowseButton) to allow for :
  * 1. Upload of files (pictures) to the server so that you can immediately preview what you uploaded.
  * 2. Selecting a picture from a remote location (inpired by Ext.ux.ImageField)
  * 
- * @class Ext.ux.form.ScreenshotField
- * @extends Ext.form.TriggerField
+ * @version 2.0
+ * @licence GPLv3
+ * @author Charles Opute Odili (chalu) <a href="mailto:chaluwa@gmail.com">chaluwa@gmail.com</a><br><br>
+ * 
+ * Forum Thread : <a href="http://extjs.com/forum/showthread.php?t=37337">http://extjs.com/forum/showthread.php?t=37337</a><br>
+ * Project Home : <a href="http://code.google.com/p/ext-ux-screenshotfield">http://code.google.com/p/ext-ux-screenshotfield</a>
  * 
  * @constructor
- * @param {Object} config The config object 
+ * @param {Object} config The config object
  */
-
 Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 	/**
 	 * @cfg {Array} filetypeList
@@ -140,6 +139,10 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 	 */
 	value: Ext.BLANK_IMAGE_URL,
     
+	/**
+     * Inits this component with the specified config-properties and automatically
+     * creates its components.
+     */
     initComponent: function(){ 
 		this.hideTrigger = this.readOnly;
 		this.hasChange = false;
@@ -189,6 +192,9 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 		}
     },
     
+	/**
+     * Renders the component within it's container
+     */
     onRender: function(ct, position){
     	Ext.ux.form.ScreenshotField.superclass.onRender.call(this, ct, position);        
 		
@@ -250,6 +256,9 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 		}				
     },
 	
+	/**
+	 * @private
+	 */
 	resizeField: function(){		
 		var fieldItem = this.wrap.up('div.x-form-item');
 		var estimate = this.imageEl.getHeight() + 10;
@@ -267,10 +276,20 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 		fieldItem.applyStyles({'background-color': 'red'});
 	},
     
+	/**
+	 * Return the name of this screenshot field
+	 * 
+	 * @return {String} field name
+	 */
     getName: function(){
          return this.rendered ? (this.hiddenName || this.name || this.id) : '';
     },
     
+	/**
+	 * Return the value of screenshot field, i.e the selected / uploaded screenshot
+	 * 
+	 * @return {String} the field value
+	 */
     getValue: function(){
     	if(!this.rendered) {
             return Ext.ux.form.ScreenshotField.superclass.getValue.call(this);
@@ -278,6 +297,10 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
         return this.getScreenshotView();
     },
     
+	/**
+	 * Sets the fields value 
+	 * @param {String} v the new value
+	 */
     setValue: function(v){
         Ext.ux.form.ScreenshotField.superclass.setValue.call(this, v);
         if(this.rendered){
@@ -285,6 +308,12 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
         }        
     },
     
+	/**
+	 * Validates the current value in the screenshot field
+	 * @param {Object} value the value to validate
+	 * 
+	 * @return {Boolean} true if valid false otherwise
+	 */
     validateValue: function(value){
     	if(value === Ext.BLANK_IMAGE_URL){ // if it's blank
              if(this.allowBlank){
@@ -305,6 +334,9 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
         return true;
     },
 	
+	/**
+	 * Disables the screenshot field
+	 */
 	disable: function(){
 		Ext.ux.form.ScreenshotField.superclass.disable.call(this);		
 		if(this.mode === 'local'){
@@ -314,6 +346,9 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 		}			
 	},
 	
+	/**
+	 * Enables the screenshot field
+	 */
 	enable: function(){
 		Ext.ux.form.ScreenshotField.superclass.enable.call(this);				
 		if(this.mode === 'local'){
@@ -322,6 +357,10 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 		}			
 	},
 	
+	/**
+	 * Mark this field as invalid
+	 * @param {String} msg the invalid message
+	 */
 	markInvalid : function(msg){
 		Ext.ux.form.ScreenshotField.superclass.markInvalid.call(msg);
 		
@@ -379,6 +418,9 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
         this.fireEvent('invalid', this, msg);
     },
 	
+	/**
+	 * Removes the invalid maker from the field
+	 */
 	clearInvalid: function(){
 		Ext.ux.form.ScreenshotField.superclass.clearInvalid.call(this);
 		
@@ -414,6 +456,12 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
         this.fireEvent('valid', this);
     },
 	
+	/**
+	 * Applys the Ext.ux.form.ScreenshotField.filetypeList check 
+	 * @param {String} value the value to validate
+	 * 
+	 * @return {String/Boolean} true if valid, else Ext.form.Field.invalidText
+	 */
 	validator: function(value){
 		if(this.regex && !this.regex.test(value)){
             return this.invalidText;
@@ -421,12 +469,18 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
         return true;
 	},
 	
+	/**
+	 * @private
+	 */
     getSelectedRecords: function(){
 		this.selections = this.browser.getSelectedIndexes();
 		this.selectedRecords = this.browser.getSelectedRecords();
         return this.selectedRecords;
     },
 	
+	/**
+	 * @private
+	 */
     onSelect: function(){
 		var selectedRecords = '';
 		var returnValue = (this.getSelectedRecords().length > 0) ? this.selectedRecords[0].get(this.valueField) : '';		
@@ -443,6 +497,7 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
     /**
      * The function that should handle the trigger's click event. 
      * This method is only called in remote mode
+     * @param {Object} e click event
      */
     onTriggerClick : function(e){
 		if(this.disabled){
@@ -495,6 +550,12 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 		this.fireEvent('expand', this, this.browser);
 	},
     
+	/**
+	 * Return the basename of the file selection (field value)
+	 * @param {String} value field value
+	 * 
+	 * @return {String} basename
+	 */
     getFileBaseName: function(value){
     	if(value){
     		value = value.substring( value.lastIndexOf('/')+1 );
@@ -503,6 +564,9 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
     	return value;
     },
     
+	/**
+	 * @private
+	 */
     setClipSize: function(){
 		if(this.clipEl) {
 			var width = this.wrapWidth;
@@ -521,6 +585,9 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 		}
 	},
 	
+	/**
+	 * @private
+	 */
 	addClipListeners: function(){
 		this.clipEl.on({
 			'mousemove': this.onButtonMouseMove,
@@ -529,10 +596,16 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 		});
 	},
 	
+	/**
+	 * @private
+	 */
 	removeClipListeners: function(){
 		this.clipEl.removeAllListeners();
 	},
 	
+	/**
+	 * @private
+	 */
 	createInputFile: function(){
 		this.inputFileEl = this.floatEl.createChild({
 			tag: 'input',
@@ -573,6 +646,9 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 		}		
 	},
 	
+	/**
+	 * @private
+	 */
 	onFieldFocus: function(e){
 		if (this.inputFileEl) {
 			this.inputFileEl.focus();
@@ -580,6 +656,9 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 		}
 	},
 	
+	/**
+	 * @private
+	 */
 	onFieldKeyDown: function(e){
 		if (this.inputFileEl && e.getKey() == Ext.EventObject.SPACE) {
 			this.inputFileEl.dom.click();
@@ -587,6 +666,9 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 		}
 	},
 	
+	/**
+	 * @private
+	 */
 	onButtonMouseMove: function(e){
 		var xy = e.getXY();
 		xy[0] -= this.FLOAT_EL_WIDTH / 2;
@@ -594,28 +676,48 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 		this.floatEl.setXY(xy);
 	},
 	
+	/**
+	 * @private
+	 */
 	onInputFileFocus: function(e){
 		if (!this.isDisabled) {
 			//this.wrap.addClass("x-box-blue");
 		}
 	},
 	
+	/**
+	 * @private
+	 */
 	onInputFileBlur: function(e){
 		//this.wrap.removeClass("x-box-blue");
 	},
 
+	/**
+	 * @private
+	 */
 	onInputFileClick: function(e){
 		e.stopPropagation();
 	},
 	
+	/**
+	 * @private
+	 */
 	onInputFileChange: function(){
 		this.upload.call(this);
 	},
 	
+	/**
+	 * @private
+	 */
 	getInputFile: function(){
 		return this.inputFileEl;
 	},
     
+	/**
+	 * Return the containing form for this field
+	 * 
+	 * @return {Ext.form.FormPanel} The parent form
+	 */
     getParentForm: function(){
     	var form = this.findParentBy(function(ct){
     		if(ct.isXType('form')){
@@ -625,6 +727,10 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
     	return form;
     },
     
+	/**
+	 * Sets the view (image / screenshot) for this field
+	 * @param {Object} v the value to set the view with
+	 */
     setScreenshotView: function(v){
     	if(this.imageEl){
     		var src = (v === null || v === undefined ? Ext.BLANK_IMAGE_URL : v);    	
@@ -632,6 +738,11 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
     	}	    	
     },
     
+	/**
+	 * Gets the current image / screenshot of this ffield
+	 * 
+	 * @return {String} the screenshot value
+	 */
     getScreenshotView: function(){
     	if(this.imageEl){
     		return this.imageEl.dom.src;
@@ -639,10 +750,17 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
         return this.value;
     },
     
+	/**
+	 * Sets the URL to upload screenshots to
+	 * @param {String} url the upload url
+	 */
     setUploadURL: function(url){
     	this.uploadUrl = url;
     },
 	
+	/**
+	 * @private
+	 */
 	upload: function(){
 		// do the upload  
     	if(!this.parentForm){
@@ -671,6 +789,9 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 		}
 	},
     
+	/**
+	 * @private
+	 */
     afterupload: function(form, field, result){
 		this.hasChange = true;
     	this.inputFileEl.remove();
@@ -678,20 +799,35 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
         this.createInputFile();
 		this.fireEvent('afterupload', form, field, result);
     },
-        
+    
+	/**
+	 * Default success handler called after an upload (in local mode)
+	 * @param {Ext.form.FormPanel} form parent form for the field
+	 * @param {Ext.form.Action.Submit} action form submit action object
+	 */  
     onSuccess: function(form, action){
     	var result = action.result;
     	this.setValue(result.url);
 		this.afterupload(form, this, result);        
         this.validate();
     },
-        
+       
+	/**
+	 * Default failure handler called after an upload (in local mode)
+	 * @param {Ext.form.FormPanel} form parent form for the field
+	 * @param {Ext.form.Action.Submit} action form submit action object
+	 */ 
     onFailure: function(form, action){
     	var result = action.result;
     	this.handleErrors(result, result.errors);
         this.afterupload(form, this, result);
     },
     
+	/**
+	 * Default uploaad error handler
+	 * @param {Ext.form.FormPanel} form parent form for the field
+	 * @param {Ext.form.Action.Submit} action form submit action object
+	 */
     handleErrors: function(result, errors){    	
     	if(!this.errorMsgTpl){
     		this.errorMsgTpl = new Ext.XTemplate(
