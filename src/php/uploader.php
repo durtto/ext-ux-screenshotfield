@@ -24,8 +24,8 @@ if(isset($query) && $query === 'signature-upload'){  // file upload attempt
 		$target_path = $target_path . basename($fileName);
 		if(move_uploaded_file($tmpName, $target_path)){
 			$response['success'] = true;
-            $response['data'] = array(); // needed if you ever use this with Ext.ux.XMetaForm or Ext.ux.Wizard !!
-			$response['url'] = str_replace(DIRECTORY_SEPARATOR, '/', 'php' . DIRECTORY_SEPARATOR . $target_path);
+            $response['data'] = array(); // needed if you ever use this with Ext.ux.form.XMetaForm or Ext.ux.Wizard !!
+			$response['url'] = str_replace(DIRECTORY_SEPARATOR, '/', 'src/php' . DIRECTORY_SEPARATOR . $target_path);
 		} else {
 			$response['success'] = false;
 			if(isset($uploadErrors[$fileErr])){
