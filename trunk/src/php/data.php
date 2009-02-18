@@ -2,7 +2,7 @@
 // Start the session for this page
 session_start();
 header("Cache-control: private");
-define(DIRECTORY, getcwd() . DIRECTORY_SEPARATOR . '_FILES');
+@define(DIRECTORY, getcwd() . DIRECTORY_SEPARATOR . '_FILES');
 
 // Setup some variables
 $store = $_REQUEST['directory'];
