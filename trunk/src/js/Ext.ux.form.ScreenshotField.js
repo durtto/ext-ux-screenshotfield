@@ -146,6 +146,7 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
     initComponent: function(){ 
 		this.hideTrigger = this.readOnly;
 		this.hasChange = false;
+		this.initialValue = this.value;
         Ext.ux.form.ScreenshotField.superclass.initComponent.apply(this, arguments);
         
         this.width = parseInt(this.width, 10);
@@ -174,12 +175,12 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 			this.isStoreLoaded = false;
 			
 			// we may be given just a config literal
-			if(this.browser && this.browser.enable == undefined){
-				if(this.browser.store.add == undefined){
+			if(this.browser && this.browser.enable === undefined){
+				if(this.browser.store.add === undefined){
 					this.browser.store = new Ext.data.JsonStore(this.browser.store);
 				}
 				
-				if(this.browser.tpl.apply == undefined){
+				if(this.browser.tpl.apply === undefined){
 					this.browser.tpl = new Ext.XTemplate(this.browser.tpl);
 				}				
 				this.browser = new Ext.DataView(this.browser);
@@ -314,23 +315,25 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 	 * 
 	 * @return {Boolean} true if valid false otherwise
 	 */
-    validateValue: function(value){
-    	if(value === Ext.BLANK_IMAGE_URL){ // if it's blank
-             if(this.allowBlank){
-                 this.clearInvalid();
-                 return true;
-             }else if(this.hasChange){ // an input attempt has been made on this field
-                 this.markInvalid(this.blankText);
-                 return false;
-             }
-        }  
-        if(typeof this.validator == "function"){
-            var msg = this.validator(value);
+    validateValue: function(value){		
+		if (this.allowBlank === true) {
+			this.clearInvalid();
+			return true;
+		}else if (!this.allowBlank && !this.hasChange) { // an input attempt is yet to be made on the field
+			return false;			
+		}else if(this.hasChange){ // an input attempt has been made on the field
+			if(!this.allowBlank && (Ext.isEmpty(value) || (this.initialValue === value))){
+				this.markInvalid(this.blankText);
+				return false;
+			}
+			
+			var msg = this.validator(value);
             if(msg !== true){
                 this.markInvalid(msg);
                 return false;
             }
         }
+		
         return true;
     },
 	
@@ -487,7 +490,6 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 		if (returnValue !== this.value){			
 			this.setValue(returnValue);
 			this.hasChange = true;	
-	        //this.setValidState(true);
 			this.validate();
 		}
         this.window.hide();
@@ -501,14 +503,13 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
      */
     onTriggerClick : function(e){
 		if(this.disabled){
-			console.info('disabled on remote');
             return;
         }
         // load the data store
         if (!this.isStoreLoaded) {
             this.browser.store.load();
             this.isStoreLoaded = true;
-        } else if (this.alwaysLoadStore == true) {
+        } else if (this.alwaysLoadStore === true) {
             this.browser.store.reload();
         }
 		// setup window with forced config
@@ -794,6 +795,8 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 	 */
     afterupload: function(form, field, result){
 		this.hasChange = true;
+		this.validate();
+		
     	this.inputFileEl.remove();
         this.mask.hide(); 
         this.createInputFile();
@@ -807,9 +810,8 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 	 */  
     onSuccess: function(form, action){
     	var result = action.result;
-    	this.setValue(result.url);
-		this.afterupload(form, this, result);        
-        this.validate();
+    	this.setValue(result.url);		
+		this.afterupload(form, this, result);
     },
        
 	/**
@@ -837,12 +839,7 @@ Ext.ux.form.ScreenshotField = Ext.extend(Ext.form.TriggerField, {
 	        	'</tpl>'
 	        );
     	}
-    	Ext.Msg.show({
-            title: 'Upload Failed',
-            msg: errors ? this.errorMsgTpl.applyTemplate(result) : "<p>Your Screenshot Was Not Uploaded</p>",
-            buttons: Ext.Msg.OK,
-            minWidth: 300
-        });
+		Ext.Msg.alert('Upload Failed', (errors ? this.errorMsgTpl.applyTemplate(result) : "<p>Your Screenshot Was Not Uploaded</p>"));
     }
     
 });
